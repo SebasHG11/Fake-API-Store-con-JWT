@@ -35,6 +35,14 @@ namespace Api1.Data{
                 entity.Property(c => c.Imagen).IsRequired();
             });
 
+            modelBuilder.Entity<Usuario>(entity =>{
+                entity.ToTable("Usuario");
+                entity.HasKey(u => u.Id);
+                entity.Property(u => u.Nombre).IsRequired();
+                entity.Property(u => u.Contraseña).IsRequired();
+                entity.Property(u => u.Rol).IsRequired();
+            });
+
             modelBuilder.Entity<Orden>(entity=>{
                 entity.ToTable("Orden");
                 entity.HasKey(o => o.Id);
