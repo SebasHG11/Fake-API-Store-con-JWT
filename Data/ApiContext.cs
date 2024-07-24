@@ -50,7 +50,8 @@ namespace Api1.Data{
                 // foreign key a usuario
                 entity.HasOne(o => o.Usuario)
                 .WithMany(u => u.Ordenes)
-                .HasForeignKey(o => o.UsuarioId);
+                .HasForeignKey(o => o.UsuarioId)
+                .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<OrdenProducto>(entity=>{

@@ -13,7 +13,9 @@ namespace Api1.Services{
 
         public async Task<IEnumerable<Orden>> MostrarOrdenes()
         {
-            return await _context.Ordens.Include(o => o.OrdenProductos).ToListAsync();
+            return await _context.Ordens
+                .Include(o => o.OrdenProductos)
+                .ToListAsync();
         }
 
         public async Task RealizarOrden(CrearOrdenDTO ordenDTO)
@@ -24,12 +26,13 @@ namespace Api1.Services{
             }
 
             try{
-                var usuarioId = 1; //Obtener el id del usuario autenticado
+                var usuarioId = 2; //Obtener el id del usuario autenticado
 
                 var orden = new Orden
                 {
                     Fecha = DateTime.Now,
                     UsuarioId = usuarioId,
+                    PrecioTotalCompra = ordenDTO.PrecioTotalCompra,
                     OrdenProductos = ordenDTO?.Productos?.Select(p => new OrdenProducto
                     {
                         ProductoId = p.ProductoId,

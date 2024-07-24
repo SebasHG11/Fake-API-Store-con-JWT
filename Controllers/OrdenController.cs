@@ -13,8 +13,14 @@ namespace Api1.Controllers{
         }
 
         [HttpGet]
-        public IActionResult GetOrdenes(){
-            return Ok(_ordenService.MostrarOrdenes());
+        public async Task<IActionResult> GetOrdenes(){
+            try{
+                var ordenes = await _ordenService.MostrarOrdenes();
+                return Ok(ordenes);
+            }catch(Exception ex){
+                return BadRequest(new{error = ex});
+            }
+            
         }
 
         [HttpPost]
