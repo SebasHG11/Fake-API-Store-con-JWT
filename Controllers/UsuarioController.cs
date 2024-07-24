@@ -1,15 +1,19 @@
 using Api1.Models;
 using Api1.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api1.Controllers{
+    [Authorize]
     [Route("api/[controller]")]
     public class UsuarioController : ControllerBase{
         private readonly IUsuarioService _usuarioService;
+        private readonly IOrdenService _ordenService;
 
-        public UsuarioController(IUsuarioService usuarioService)
+        public UsuarioController(IUsuarioService usuarioService, IOrdenService ordenService)
         {
             _usuarioService = usuarioService;
+            _ordenService = ordenService;
         }
 
         [HttpGet]
@@ -23,6 +27,20 @@ namespace Api1.Controllers{
             
         }
 
+        [HttpGet("actual")]
+        public IActionResult GetUsuarioAutenticado(){
+            try{
+                var usuario = _ordenService.GetUsuarioActual();
+                if(usuario == null){
+                    return Unauthorized(new { message = "Usuario no autenticado" });
+                }
+
+                return Ok(usuario);
+            }catch(Exception ex){
+                return StatusCode(500, new{ error = ex.Message });
+            }
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUsuarioById(int Id){
             try{
@@ -32,24 +50,6 @@ namespace Api1.Controllers{
                 return NotFound(new{message = "Usuario no encontrado"});
             }catch(Exception ex){
                 return StatusCode(500, new{ error = ex.Message });
-            }
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> PostUsuario([FromBody] UsuarioDTO usuarioDTO){
-            try{
-                var usuario = new Usuario
-                {
-                    Nombre = usuarioDTO.Nombre,
-                    Contraseña = usuarioDTO.Contraseña,
-                    Rol = usuarioDTO.Rol,
-                    Foto = usuarioDTO.Foto
-                };
-
-                await _usuarioService.AgregarUsuario(usuario);
-                return Ok( new { message = "Usuario creado correctamente" });
-            }catch(Exception ex){
-                return BadRequest( new {error = ex.Message} );
             }
         }
 
@@ -75,6 +75,7 @@ namespace Api1.Controllers{
         }
 
         [HttpDelete("{Id}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteUsuario(int Id){
             try{
                 await _usuarioService.EliminarUsuario(Id);

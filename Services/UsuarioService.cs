@@ -31,6 +31,8 @@ namespace Api1.Services{
                 throw new ArgumentException("Datos no validos");
             }
 
+            usuario.Contraseña = BCrypt.Net.BCrypt.HashPassword(usuario.Contraseña);
+
             await _context.Usuarios.AddAsync(usuario);
             await _context.SaveChangesAsync();
         }
@@ -39,7 +41,11 @@ namespace Api1.Services{
             var UsuarioActual = await MostrarUsuarioPorId(Id);
 
             UsuarioActual.Nombre = usuario.Nombre;
-            UsuarioActual.Contraseña = usuario.Contraseña;
+            
+            if (!BCrypt.Net.BCrypt.Verify(usuario.Contraseña, UsuarioActual.Contraseña)){
+                UsuarioActual.Contraseña = BCrypt.Net.BCrypt.HashPassword(usuario.Contraseña);
+            }
+
             UsuarioActual.Rol = usuario.Rol;
             UsuarioActual.Foto = usuario.Foto;
 

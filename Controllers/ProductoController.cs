@@ -1,5 +1,6 @@
 using Api1.Models;
 using Api1.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api1.Controllers{
@@ -12,11 +13,13 @@ namespace Api1.Controllers{
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult GetProductos(){
             return Ok(_productoService.MostrarProductos());
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public IActionResult GetProductoById(int id){
             var producto = _productoService.MostrarProductoById(id);
 
@@ -28,6 +31,7 @@ namespace Api1.Controllers{
         }
 
         [HttpPost]
+        [Authorize(Roles = ("admin"))]
         public async Task<IActionResult> PostProducto([FromBody] ProductoDTO productoDTO){
             if(productoDTO == null){
                 return BadRequest();
