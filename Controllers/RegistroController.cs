@@ -20,7 +20,7 @@ namespace Api1.Controllers{
                 {
                     Nombre = usuarioDTO.Nombre,
                     Contraseña = usuarioDTO.Contraseña,
-                    Rol = usuarioDTO.Rol,
+                    Rol = "basico",
                     Foto = usuarioDTO.Foto
                 };
 

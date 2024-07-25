@@ -31,7 +31,7 @@ namespace Api1.Controllers{
         }
 
         [HttpPost]
-        [Authorize(Roles = ("admin"))]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> PostProducto([FromBody] ProductoDTO productoDTO){
             if(productoDTO == null){
                 return BadRequest();
@@ -59,6 +59,7 @@ namespace Api1.Controllers{
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> PutProducto(int id, [FromBody] ProductoDTO productoDTO){
             if(productoDTO == null){
                 return BadRequest();
@@ -88,6 +89,7 @@ namespace Api1.Controllers{
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteProducto(int id){
             try{
                 var producto = _productoService.MostrarProductoById(id);

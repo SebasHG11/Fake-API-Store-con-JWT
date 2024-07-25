@@ -1,9 +1,11 @@
 using Api1.Models;
 using Api1.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api1.Controllers{
     [Route("api/[controller]")]
+    [Authorize]
     public class OrdenController : ControllerBase{
         private readonly IOrdenService _ordenService;
 

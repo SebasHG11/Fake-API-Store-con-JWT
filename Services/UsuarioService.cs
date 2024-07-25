@@ -41,8 +41,9 @@ namespace Api1.Services{
             var UsuarioActual = await MostrarUsuarioPorId(Id);
 
             UsuarioActual.Nombre = usuario.Nombre;
-            
-            if (!BCrypt.Net.BCrypt.Verify(usuario.Contraseña, UsuarioActual.Contraseña)){
+
+            if (!BCrypt.Net.BCrypt.Verify(usuario.Contraseña, UsuarioActual.Contraseña) 
+                && usuario.Contraseña != UsuarioActual.Contraseña){
                 UsuarioActual.Contraseña = BCrypt.Net.BCrypt.HashPassword(usuario.Contraseña);
             }
 
@@ -51,6 +52,7 @@ namespace Api1.Services{
 
             await _context.SaveChangesAsync();
         }
+
 
         public async Task EliminarUsuario(int Id){
             var UsuarioActual = await MostrarUsuarioPorId(Id);

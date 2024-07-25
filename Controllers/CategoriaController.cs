@@ -1,5 +1,6 @@
 using Api1.Models;
 using Api1.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api1.Controllers{
@@ -12,11 +13,13 @@ namespace Api1.Controllers{
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult GetCategorias(){
             return Ok(_categoriaService.MostrarCategorias());
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public IActionResult GetCategoriaById(int id){
             var categoria = _categoriaService.MostrarCategoriaById(id);
             
@@ -28,6 +31,7 @@ namespace Api1.Controllers{
         }
 
         [HttpGet("{IdCategoria}/productos")]
+        [Authorize]
         public IActionResult GetProductosPorCategoria(int IdCategoria){
             var productos = _categoriaService.MostrarProductosPorCategoria(IdCategoria);
 
@@ -45,6 +49,7 @@ namespace Api1.Controllers{
 
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> PostCategoria([FromBody] CategoriaDTO categoriaDTO){
             if(categoriaDTO == null){
                 return BadRequest();
@@ -66,6 +71,7 @@ namespace Api1.Controllers{
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> PutCategoria(int id, [FromBody] CategoriaDTO categoriaDTO){
             if(categoriaDTO == null){
                 return BadRequest();
@@ -94,6 +100,7 @@ namespace Api1.Controllers{
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteCategoria(int id){
             var categoria = _categoriaService.MostrarCategoriaById(id);
 

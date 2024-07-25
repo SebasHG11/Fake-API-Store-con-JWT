@@ -41,6 +41,7 @@ namespace Api1.Data{
                 entity.Property(u => u.Nombre).IsRequired();
                 entity.Property(u => u.Contraseña).IsRequired();
                 entity.Property(u => u.Rol).IsRequired();
+                entity.HasIndex(u => u.Nombre).IsUnique();
             });
 
             modelBuilder.Entity<Orden>(entity=>{
