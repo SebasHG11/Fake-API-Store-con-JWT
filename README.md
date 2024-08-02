@@ -4,3 +4,5 @@ La API tiene autenticación JWT, que se realiza consumiendo un endpoint de LOGIN
 Los usuarios se crean por medio de un endpoint de REGISTRO.
 Los usuarios pueden tener dos roles "admin" y "basico", segun su rol pueden consumir endpoints.
 Tambien los usuarios pueden realizar Ordenes que se guardan asociando el id del usuario, el id del producto y la cantidad del producto.
+
+![image](https://github.com/user-attachments/assets/f8ca36fc-3f65-4886-a63a-442c9700013f)
